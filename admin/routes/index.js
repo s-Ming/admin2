@@ -20,8 +20,6 @@ router.get('/insert', async(req, res, next) => {
         goodsKu,
         imgurl
     } = req.query;
-    console.log("---------------------------------")
-    console.log(goodsId)
     let data = await find(`goods`, {
         goodsId: goodsId
     })
@@ -45,8 +43,27 @@ router.get('/insert', async(req, res, next) => {
     }
 });
 
-/* 查找数据  排序*/
+/* 查找全部数据  排序*/
+router.get('/findGoods', async(req, res, next) => {
+    let {
+        goodsId,
+        dateUp,
+        dateDown,
+        priceUp,
+        priceDown
+    } = req.query;
+    console.log(goodsId)
+    let data = await find(`goods`, goodsId ? {
+        goodsId
+    } : {})
 
+    if (data.length != 0) {
+        res.send(data);
+        return;
+    } else {
+        res.send('没有数据')
+    }
+});
 
 /* 修改数据 */
 

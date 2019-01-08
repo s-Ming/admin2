@@ -1,7 +1,7 @@
 require(['config'], function() {
     require(['jquery'], function($) {
 
-        //上传商品
+        //上传商品构造函数
         function AddGoods() {
             console.log(11111);
             //图片上传状态，未提交则不能提交信息
@@ -92,10 +92,10 @@ require(['config'], function() {
             this.goodsName = $('#goodsName').val(); //名称
             this.goodsPrice = $('#goodsPrice').val(); //价格
             this.goodsMiao = $('#goodsMiao').val(); //描述
-            this.goodsZhuang = $('#goodsZhuang').val(); //状态
-            this.goodsLei = $('#goodsLei').val(); //类型
+            this.goodsZhuang = $('#goodsZhuang option:selected').val() //状态
+            this.goodsLei = $('#goodsLei option:selected').val(); //类型
             this.goodsKu = $('#goodsKu').val(); //库存
-            console.log(this.goodsId);
+            // console.log(this.goodsZhuang);
             //执行验证
             this.check();
         };
@@ -143,6 +143,74 @@ require(['config'], function() {
 
         };
         new AddGoods();
+
+
+
+
+        //商品展示构造函数  包含搜索，删除，修改，排序，商品修改构造函数
+        function Goods() {
+            this.getData();
+
+            this.data; //储存请求的数据
+        }
+        //页面初始化 获取数据
+        Goods.prototype.getData = function() {
+            $.get('http://localhost:3000/index/findGoods', (res) => {
+                this.data = res;
+                // console.log(this.data)
+                //渲染页面
+                this.render();
+            })
+        };
+
+        // 渲染数据方法
+        Goods.prototype.render = function() {
+            var res = '';
+            var str = this.data.map((item, idx) => {
+                return `
+                <tr class="text-c" data-guid="${item['goodsId']}">
+                 <td><input name="" type="checkbox" value=""></td>
+                 <td>${item['goodsId']}</td>
+                 <td>${item['goodsName']}</td>
+                 <td><img class="img" src='${item['imgurl']}' style="width:100px"></td>
+                 <td>${item['goodsLei']}</td>
+                 <td class="text-l">${item['goodsPrice']}</td>
+                 <td class="text-c">${item['goodsMiao']}</td>
+                 <td>${item['goodsKu']}</td>
+                 <td class="td-status"><span class="label label-success radius">${item['goodsZhuang']}</span></td>
+                 <td class="td-manage">
+                 <button class="bianji">编辑</button>
+                 <button class="shanchu">删除</button>
+              </tr>
+              `
+            }).join('');
+            $('tbody').html(str);
+        };
+
+        //搜索方法
+        Goods.prototype.search = function() {
+
+        };
+
+        //单项删除方法
+        Goods.prototype.dele = function() {
+
+        };
+
+        // 批量删除方法
+        Goods.prototype.allDele = function() {
+
+        };
+
+        // 分页逻辑
+        Goods.prototype.goPage = function() {
+
+        };
+
+        new Goods();
+
+
+
 
     })
 })
