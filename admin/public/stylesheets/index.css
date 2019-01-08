@@ -102,3 +102,26 @@ body {
 .border-bottom {
     border-bottom: 1px solid #e5e5e5;
 }
+
+
+/* 设置隐藏 */
+
+
+/* .container-fluid .row main {
+    display: none;
+} */
+
+
+/* 新增商品模块 */
+
+.container-fluid .row .newGoods {
+    display: none;
+}
+
+.container-fluid .row .newGoods p {
+    width: 100%;
+}
+
+#uploadimg {
+    max-width: 500px;
+}

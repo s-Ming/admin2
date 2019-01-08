@@ -13,8 +13,8 @@
 <body>
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">用户名</a>
-        <input class="form-control form-control-dark w-100" type="text" placeholder="请输入商品名称" aria-label="Search">
-        <ul class="navbar-nav px-3">
+        <input class="form-control form-control-dark w-70" type="text" placeholder="请输入商品名称" aria-label="Search">
+        <ul class="navbar-nav px-3 col-sm-2 col-md-1">
             <li class="nav-item text-nowrap">
                 <a class="nav-link" href="#">搜索</a>
             </li>
@@ -31,7 +31,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>                                新增商品 <span class="sr-only">(current)</span>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>                                删除商品
                             </a>
@@ -40,7 +40,7 @@
                             <a class="nav-link" href="#">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>                                修改商品
                             </a>
-                        </li>
+                        </li> -->
 
 
                     </ul>
@@ -49,14 +49,6 @@
             </nav>
 
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <!-- <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                    <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                        <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                    </div>
-                    <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                        <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                    </div>
-                </div> -->
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                     <h1 class="h2">商品列表</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
@@ -82,20 +74,20 @@
                                         <option value="20">20</option>
                                         <option value="30">30</option>
                                     </select>
-                                    <input type="text" name="" id="" placeholder=" 产品名称" style="width:250px" class="input-text">
-                                    <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜产品</button>
+                                    <!-- <input type="text" name="" id="" placeholder=" 产品名称" style="width:250px" class="input-text">
+                                    <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜产品</button> -->
                                 </div>
-                                <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="page.datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a class="btn btn-primary radius" onclick="product_add('添加产品','product-add.html')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加产品</a></span>                                    <span class="r">共有数据：<strong class="dataNum">0</strong> 条</span> </div>
+                                <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;"  class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> </span> <span class="r">共有数据：<strong class="dataNum">0</strong> 条</span> </div>
                                 <div class="mt-20">
                                     <table class="table table-border table-bordered table-bg table-hover table-sort">
                                         <thead>
                                             <tr class="text-c">
                                                 <th width="40"><input name="" type="checkbox" class="allCheck"></th>
-                                                <th width="80" class="id" style="cursor:pointer">ID ↑</th>
+                                                <th width="80" class="id" style="cursor:pointer">ID </th>
                                                 <th width="100">名称</th>
                                                 <th width="100">缩略图</th>
                                                 <th>图片名称</th>
-                                                <th width="150" class="price" style="cursor:pointer">单价 ↑</th>
+                                                <th width="150" class="price" style="cursor:pointer">单价 </th>
                                                 <th width="150">描述</th>
                                                 <th width="150">库存</th>
                                                 <th width="60">发布状态</th>
@@ -103,8 +95,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            
-                                            
+
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -123,10 +115,68 @@
                     </div>
                 </section>
 
-
-
-
             </main>
+
+            <!-- 新增商品界面 -->
+            <div role="main" class="newGoods col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <form>
+                    <h4>请按照格式商品信息</h4>
+                    <div class="form-group">
+                        <label for="goodsId">id</label>
+                        <input type="email" class="form-control" id="goodsId" placeholder="输入商品ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="goodsName">名称</label>
+                        <input type="email" class="form-control" id="goodsName" placeholder="输入商品名称">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsPrice">单价</label>
+                        <input type="email" class="form-control" id="goodsPrice" placeholder="输入商品单价">
+                    </div>
+                    <div class="form-group">
+                        <label for="goodsMiao">描述</label>
+                        <input type="email" class="form-control" id="goodsMiao" placeholder="输入商品描述">
+                    </div>
+                    <div class="form-group">
+                        <label for="goodsKu">库存</label>
+                        <input type="email" class="form-control" id="goodsKu" placeholder="输入商品库存">
+                    </div>
+                    <div class="form-group">
+                        <label for="goodsKu">类型</label>
+
+                        <select name="" id="select" class="form-control" id="goodsLei">
+                                <option value="电器">电器</option>
+                                <option value="家具">家具</option>
+                                <option value="衣服">衣服</option>
+                                <option value="运动">运动</option><option value="文具">文具</option><option value="游戏">游戏</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="goodsZhuang">发布状态</label>
+                        <select name="" id="select" class="form-control" id="goodsZhuang">
+                                <option value="false">false</option>
+                                <option value="true">true</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goodsPicture">图片上传</label>
+                        <input type="file" id="goodsPicture">
+                        <button type="button" class="btn btn-default" id="goodsPictureAdd">上传图片</button>
+                        <p class="help-block">图片展示
+                            <img src="" alt="图片未上传" id="uploadimg">
+                        </p>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                                <input type="checkbox"> 选我
+                              </label>
+                    </div>
+                    <button type="button" class="btn btn-default" id="button">提交</button>
+                </form>
+
+            </div>
         </div>
     </div>
 
@@ -134,5 +184,6 @@
 
 
 </body>
+<script src="./javascripts/require.js" data-main="./javascripts/index.js"></script>
 
 </html>
