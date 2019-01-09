@@ -124,3 +124,12 @@ body {
 #uploadimg {
     max-width: 500px;
 }
+
+/* 显示 样式层叠*/
+.container-fluid .row .newGoods.block{
+    display: block;
+}
+
+.none{
+    display: none;
+}

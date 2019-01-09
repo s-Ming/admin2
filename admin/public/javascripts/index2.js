@@ -12,29 +12,10 @@ require(['config'], function () {
             this.goodsPictureAdd.onclick = this.picture.bind(this); //改变this指向
             //点击提交执行获取信息--》验证
             $('#button').on('click', () => {
-                this.getGoods();
+                this.data();
             })
             //提交
             // $('#button')
-
-
-            this.data; //储存请求的数据
-
-            this.rootpath = 'http://localhost:3000';
-            this.pagesize = 5; //显示信息数量
-            this.total = 0; //总页数
-            this.nowpage = 1; //当前页码
-            this.id = false; //判断是否是ID排序
-            this.price = true; //判断是否是价格排序;
-            this.mohu = false; //是否模糊查询
-            this.paixu = 'goodsId'; //排序类型
-            this.sort = -1; //默认升序排序   参数是数值类型
-            this.val = '' //储存模糊查询的值;
-
-            this.target; //储存当前修改或删除点击的元素
-
-            this.getData(); //请求数据
-            this.listen() //监听点击事件
 
         }
         //图片上传
@@ -104,7 +85,7 @@ require(['config'], function () {
         };
 
         //获取输入的信息
-        AddGoods.prototype.getGoods = function () {
+        AddGoods.prototype.data = function () {
             console.log(this)
             //获取信息
             this.goodsId = $('#goodsId').val(); //id
@@ -144,7 +125,7 @@ require(['config'], function () {
                         $('.container-fluid .row main').css('display', 'block');
 
                         //执行Goods构造函数，重新加载数据
-                        this.getData();
+                        new Goods();
                     } else {
                         alert('插入失败')
                     }
@@ -163,10 +144,36 @@ require(['config'], function () {
         AddGoods.prototype.btnCheck = function () {
 
         };
+        new AddGoods();
 
+
+
+
+        //商品展示构造函数  包含搜索，删除，修改，排序，商品修改构造函数
+        function Goods() {
+
+
+            this.data; //储存请求的数据
+
+            this.rootpath = 'http://localhost:3000';
+            this.pagesize = 5; //显示信息数量
+            this.total = 0; //总页数
+            this.nowpage = 1; //当前页码
+            this.id = false; //判断是否是ID排序
+            this.price = true; //判断是否是价格排序;
+            this.mohu = false; //是否模糊查询
+            this.paixu = 'goodsId'; //排序类型
+            this.sort = -1; //默认升序排序   参数是数值类型
+            this.val = '' //储存模糊查询的值;
+
+            this.target; //储存当前修改或删除点击的元素
+
+            this.getData(); //请求数据
+            this.listen() //监听点击事件
+        }
 
         //页面初始化 获取数据
-        AddGoods.prototype.getData = function () {
+        Goods.prototype.getData = function () {
             let data = {
                 pagesize: this.pagesize,
                 page: this.nowpage
@@ -208,7 +215,7 @@ require(['config'], function () {
         };
 
         //点击事件监听
-        AddGoods.prototype.listen = function () {
+        Goods.prototype.listen = function () {
             console.log(77777);
             // //存储this
             // let that = this;
@@ -251,10 +258,10 @@ require(['config'], function () {
         }
 
         //修改信息
-        AddGoods.prototype.revamp = function () { }
+        Goods.prototype.revamp = function () {}
 
         // 渲染数据方法
-        AddGoods.prototype.render = function () {
+        Goods.prototype.render = function () {
             var res = '';
             var str = this.data.map((item, idx) => {
                 return `
@@ -278,12 +285,12 @@ require(['config'], function () {
         };
 
         //搜索方法
-        AddGoods.prototype.search = function () {
+        Goods.prototype.search = function () {
 
         };
 
         //单项删除方法
-        AddGoods.prototype.dele = function () {
+        Goods.prototype.dele = function () {
             console.log('我是单项删除');
             let currtr = $(this.target).closest('tr');
             let currid = currtr.attr('data-guid');
@@ -311,16 +318,16 @@ require(['config'], function () {
         };
 
         // 批量删除方法
-        AddGoods.prototype.allDele = function () {
+        Goods.prototype.allDele = function () {
 
         };
 
         // 分页逻辑
-        AddGoods.prototype.goPage = function () {
+        Goods.prototype.goPage = function () {
 
         };
-        new AddGoods();
-        // new Goods();
+
+        new Goods();
 
 
 
