@@ -149,19 +149,88 @@ require(['config'], function() {
 
         //商品展示构造函数  包含搜索，删除，修改，排序，商品修改构造函数
         function Goods() {
-            this.getData();
+
 
             this.data; //储存请求的数据
+
+            this.rootpath = 'http://localhost:3000';
+            this.pagesize = 5; //显示信息数量
+            this.total = 0; //总页数
+            this.nowpage = 1; //当前页码
+            this.id = false; //判断是否是ID排序
+            this.price = true; //判断是否是价格排序;
+            this.mohu = false; //是否模糊查询
+            this.paixu = 'goodsId'; //排序类型
+            this.sort = -1; //默认升序排序   参数是数值类型
+            this.val = '' //储存模糊查询的值;
+
+            this.target; //储存当前修改或删除点击的元素
+
+            this.getData(); //请求数据
+            this.listen() //监听点击事件
         }
         //页面初始化 获取数据
         Goods.prototype.getData = function() {
-            $.get('http://localhost:3000/index/findGoods', (res) => {
-                this.data = res;
-                // console.log(this.data)
-                //渲染页面
-                this.render();
+            let data = {
+                pagesize: this.pagesize,
+                page: this.nowpage
+            }
+            let url = this.rootpath;
+            //判断是否是模糊查询
+            if (this.mohu) {
+                console.log('模糊查询')
+                console.log(this.val)
+                data.val = this.val;
+                url = url + '/index/findGoodsSing';
+            } else if (this.id || this.price) { // 判断是否是排序查询
+                data.paixu = this.paixu;
+                data.sort = this.sort;
+                console.log('排序查询')
+                url = url + '/index/findGoodSort';
+            } else {
+                // 默认查询
+                console.log('默认查询')
+                url = url + '/index/findGoods';
+            }
+            //请求新的页数  作为当前页
+            $.get(url, data, (res) => {
+                console.log(res)
+                if (res.length != 0) {
+                    this.data = res;
+                    this.render();
+                    this.total = res.length;
+                    // 计算页数
+                    var yeshu = Math.ceil(res.length / this.pagesize);
+                    $('.zongshu').text(yeshu);
+                    //设置临界值
+                    if (this.nowpage <= yeshu) {
+                        console.log(66666)
+                        $('.danqian').text(this.nowpage);
+                    }
+                }
             })
         };
+
+        //点击事件监听
+        Goods.prototype.listen = function() {
+            console.log(77777);
+            // //存储this
+            // let that = this;
+            //获取删除按钮
+            $('tbody').on('click', 'button', (e) => {
+                this.target = e.target;
+                //根据事件源判断进行哪种事件
+                let className = e.target.className;
+                if (className == 'shanchu') {
+                    console.log('shanchu');
+                    // 执行删除函数
+                    this.dele();
+                } else if (className == 'bianji') {
+                    console.log('bianji');
+                    // 执行修改函数
+                }
+            });
+        }
 
         // 渲染数据方法
         Goods.prototype.render = function() {
@@ -194,7 +263,28 @@ require(['config'], function() {
 
         //单项删除方法
         Goods.prototype.dele = function() {
-
+            console.log('我是单项删除');
+            let currid = $(this.target).closest('tr').attr('data-guid');
+            let data = {
+                goodsId: currid
+            };
+            let url = this.rootpath + '/index/dele';
+            $.get(url, data, (res) => {
+                console.log(res)
+                if (res.length != 0) {
+                    this.data = res;
+                    this.render();
+                    this.total = res.length;
+                    // 计算页数
+                    var yeshu = Math.ceil(res.length / this.pagesize);
+                    $('.zongshu').text(yeshu);
+                    //设置临界值
+                    if (this.nowpage <= yeshu) {
+                        console.log(66666)
+                        $('.danqian').text(this.nowpage);
+                    }
+                }
+            })
         };
 
         // 批量删除方法

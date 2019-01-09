@@ -63,12 +63,52 @@ let find = (col, obj) => {
     })
 }
 
+let findSort = (col, obj) => {
+    return new Promise(async(resolve, reject) => {
+        let {
+            db,
+            client
+        } = await connect();
+        const collection = db.collection(col);
+        collection.find({}).sort({
+            ...obj
+        }).toArray(function(err, docs) {
+            if (err) {
+                reject(err)
+            } else {
+                resolve(docs);
+                client.close();
+            }
+        });
+    })
+};
+
+
+//删除
+let del = (col, obj) => {
+    return new Promise(async(resolve, reject) => {
+        let {
+            db,
+            client
+        } = await connect();
+        const collection = db.collection(col);
+        collection.deleteMany({
+            ...obj
+        }).then((res) => {
+            resolve(res)
+        }).catch((err) => {
+            reject(err)
+        })
+    })
+}
 
 module.exports = {
     connect,
     insert,
     find,
-    ObjectId
+    findSort,
+    ObjectId,
+    del
 }
 
 // node express mongodb jquery
