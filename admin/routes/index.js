@@ -5,7 +5,8 @@ var {
     findSort,
     insert,
     del,
-    update
+    update,
+    findFeng
 } = require("../libs/mongodb.js");
 console.log(findSort)
 
@@ -48,21 +49,22 @@ router.get('/insert', async(req, res, next) => {
 router.get('/findGoods', async(req, res, next) => {
     let {
         goodsId,
-        dateUp,
-        dateDown,
-        priceUp,
-        priceDown
-    } = req.query;
-    console.log(goodsId)
-    let data = await find(`goods`, goodsId ? {
-        goodsId
-    } : {})
+        pagesize,
+        page,
 
-    if (data.length != 0) {
+    } = req.query;
+    console.log(page);
+    let data = await findFeng(`goods`, goodsId ? {
+        goodsId
+    } : {}, page, pagesize)
+
+    if (data.data == 0) {
+        data.msg = '查询成功'
         res.send(data);
         return;
     } else {
-        res.send('没有数据')
+        data.msg = '查询失败'
+        res.send(data)
     }
 });
 
@@ -71,18 +73,22 @@ router.get('/findGoods', async(req, res, next) => {
 router.get('/findGoodsSing', async(req, res, next) => {
     let {
         val,
+        page,
+        pagesize
     } = req.query;
     console.log(val)
-    let data = await find(`goods`, {
+    let data = await findFeng(`goods`, {
         goodsName: val
-    });
+    }, page, pagesize);
     console.log("----------------------------------------------------------");
     console.log(data);
-    if (data.length != 0) {
+    if (data.data == 0) {
+        data.msg = '查询成功'
         res.send(data);
         return;
     } else {
-        res.send('没有数据')
+        data.msg = '查询失败'
+        res.send(data)
     }
 });
 
@@ -144,5 +150,54 @@ router.get('/dele', async(req, res, next) => {
 
 });
 
+/* 查找单个ID数据 */
+router.get('/findSinGoods', async(req, res, next) => {
+    let {
+        goodsId
 
+    } = req.query;
+    console.log(goodsId)
+    let data = await find(`goods`, { goodsId })
+
+    if (data.length != 0) {
+        res.send(data);
+        return;
+    } else {
+        res.send('没有数据')
+    }
+});
+
+
+/* 数据更新 */
+router.get('/update', async(req, res, next) => {
+    let {
+        goodsId,
+        goodsName,
+        goodsPrice,
+        goodsMiao,
+        goodsZhuang,
+        goodsLei,
+        goodsKu,
+        imgurl
+    } = req.query;
+    console.log('----------------------------------------------------------')
+    console.log(req.query)
+    console.log(goodsId);
+    let data = await update(`goods`, {
+        goodsId: goodsId
+    }, {
+        goodsId,
+        goodsName,
+        goodsPrice,
+        goodsMiao,
+        goodsZhuang,
+        goodsLei,
+        goodsKu,
+        imgurl
+    })
+
+    console.log(data)
+
+    res.send("成功");
+});
 module.exports = router;

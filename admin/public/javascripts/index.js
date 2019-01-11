@@ -1,5 +1,46 @@
-require(['config'], function () {
-    require(['jquery'], function ($) {
+require(['config'], function() {
+    require(['jquery'], function($) {
+
+        //自动登录
+        ;
+        (async() => {
+            let fn = {
+                true: async() => {
+                    let data = await fn.getUserList();
+                    // console.log(data);
+
+                },
+                false() {
+                    location.href = "./html/login.html";
+                    return this;
+                },
+                getUserList() {
+                    new AddGoods();
+
+                },
+                autoLogin() {
+                    return new Promise((resolve, reject) => {
+                        $.ajax({
+                            type: "POST",
+                            headers: {
+                                token: localStorage.getItem("token")
+                            },
+                            url: "http://localhost:3000/users/autoLogin",
+                            success(data) {
+                                console.log(data)
+                                resolve(data)
+                            }
+                        })
+                    })
+                }
+            }
+            let isLogin = await fn.autoLogin();
+            // 异步 awiat和async
+            fn[isLogin.status]()
+
+        })();
+
+
 
         //上传商品构造函数
         function AddGoods() {
@@ -12,10 +53,10 @@ require(['config'], function () {
             this.goodsPictureAdd.onclick = this.picture.bind(this); //改变this指向
             //点击提交执行获取信息--》验证
             $('#button').on('click', () => {
-                this.getGoods();
-            })
-            //提交
-            // $('#button')
+                    this.getGoods();
+                })
+                //提交
+                // $('#button')
 
 
             this.data; //储存请求的数据
@@ -25,10 +66,12 @@ require(['config'], function () {
             this.total = 0; //总页数
             this.nowpage = 1; //当前页码
             this.id = false; //判断是否是ID排序
-            this.price = true; //判断是否是价格排序;
+            this.price = false; //判断是否是价格排序;
             this.mohu = false; //是否模糊查询
             this.paixu = 'goodsId'; //排序类型
-            this.sort = -1; //默认升序排序   参数是数值类型
+            this.singleName = false; //单个商品查询
+
+            this.sort = 1; //默认升序排序   参数是数值类型
             this.val = '' //储存模糊查询的值;
 
             this.target; //储存当前修改或删除点击的元素
@@ -36,9 +79,17 @@ require(['config'], function () {
             this.getData(); //请求数据
             this.listen() //监听点击事件
 
+
+            this.goodsId; //id
+            this.goodsName; //名称
+            this.goodsPrice; //价格
+            this.goodsMiao; //描述
+            this.goodsZhuang; //状态
+            this.goodsLei; //类型
+            this.goodsKu; //库存
         }
         //图片上传
-        AddGoods.prototype.picture = function () {
+        AddGoods.prototype.picture = function() {
             // console.log('上传图片');
             // console.log(this);
             let rootPath = 'http://localhost:3000'
@@ -58,15 +109,22 @@ require(['config'], function () {
                     if (data.err == 0) {
                         //显示缩略图
                         $('#uploadimg').attr('src', rootPath + data.data)
+
                         //更改图片的上传状态
-                        this.pictureCheck = true;
-                        //保存图片路径
+                        if (this.singleName) {
+                            this.pictureCheck = false;
+                        } else {
+                            this.pictureCheck = true;
+                        }
+                        console.log(this.singleName)
+                        console.log(this.pictureCheck)
+                            //保存图片路径
                         this.imgurl = data.data;
                     } else {
                         alert(data.msg)
                     }
                 },
-                error: function (jqXHR, textStatus, errorThrown) {
+                error: function(jqXHR, textStatus, errorThrown) {
                     document.getElementById("status").innerHTML = "<span style='color:#EF0000'>连接不到服务器，请检查网络！</span>";
                 }
             });
@@ -74,7 +132,7 @@ require(['config'], function () {
         };
 
         //验证输入信息是否为空及是否合法
-        AddGoods.prototype.check = function () {
+        AddGoods.prototype.check = function() {
             console.log(this);
             if (this.goodsId * 1 != this.goodsId || this.goodsId == "") {
                 alert("请输入数字");
@@ -104,9 +162,9 @@ require(['config'], function () {
         };
 
         //获取输入的信息
-        AddGoods.prototype.getGoods = function () {
-            console.log(this)
-            //获取信息
+        AddGoods.prototype.getGoods = function() {
+            console.log('getGoods')
+                //获取信息
             this.goodsId = $('#goodsId').val(); //id
             this.goodsName = $('#goodsName').val(); //名称
             this.goodsPrice = $('#goodsPrice').val(); //价格
@@ -120,11 +178,12 @@ require(['config'], function () {
         };
 
         //提交上传的信息
-        AddGoods.prototype.btn = function () {
-            if (this.pictureCheck) {
-                //提交
-                console.log(6666);
-                $.get('http://localhost:3000/index/insert', {
+        AddGoods.prototype.btn = function() {
+            //get请求封装
+            console.log(this.goodsId);
+            var submit = (url) => {
+                console.log(this)
+                $.get(url, {
                     goodsId: this.goodsId,
                     goodsName: this.goodsName,
                     goodsPrice: this.goodsPrice,
@@ -143,30 +202,40 @@ require(['config'], function () {
                         $('.newGoods').css('display', 'none');
                         $('.container-fluid .row main').css('display', 'block');
 
-                        //执行Goods构造函数，重新加载数据
+                        //执行getData构造函数，重新加载数据
                         this.getData();
                     } else {
                         alert('插入失败')
                     }
                     //执行判读
-
                 })
+            };
+            // 执行提交的路径
+            if (this.pictureCheck) {
+                let insert = 'http://localhost:3000/index/insert';
+                //提交
+                submit(insert);
+
+            } else if (this.singleName) { //（this.singleName）如果为修改可以不提交图片
+                let update = 'http://localhost:3000/index/update';
+                console.log('我是修改提交')
+                submit(update);
+
             } else {
                 alert('请上传图片')
             }
             //改变图片上传状态
             this.pictureCheck = false;
-
         };
 
         //显示提交状态
-        AddGoods.prototype.btnCheck = function () {
+        AddGoods.prototype.btnCheck = function() {
 
         };
 
 
         //页面初始化 获取数据
-        AddGoods.prototype.getData = function () {
+        AddGoods.prototype.getData = function() {
             let data = {
                 pagesize: this.pagesize,
                 page: this.nowpage
@@ -183,33 +252,51 @@ require(['config'], function () {
                 data.sort = this.sort;
                 console.log('排序查询')
                 url = url + '/index/findGoodSort';
+            } else if (this.singleName) { //查找单个ID
+                data.goodsId = this.goodsId;
+                url = url + '/index/findSinGoods';
             } else {
                 // 默认查询
                 console.log('默认查询')
                 url = url + '/index/findGoods';
             }
+
             //请求新的页数  作为当前页
             $.get(url, data, (res) => {
-                console.log(res)
+                // console.log(res)
                 if (res.length != 0) {
+                    // 保存请求到的数据
                     this.data = res;
-                    this.render();
-                    this.total = res.length;
-                    // 计算页数
-                    var yeshu = Math.ceil(res.length / this.pagesize);
-                    $('.zongshu').text(yeshu);
-                    //设置临界值
-                    if (this.nowpage <= yeshu) {
-                        console.log(66666)
-                        $('.danqian').text(this.nowpage);
+                    // 显示总信息数量
+                    $('.dataNum').text(res.total)
+                    console.log(res)
+                        //选择渲染方式
+                    if (this.singleName) {
+                        this.render2(); //渲染修改页面的数据
+                    } else {
+                        this.render(); //商品类别页面渲染
                     }
+                    //当个请求不执行计算页数
+                    if (!this.singleName) {
+                        this.total = res.total;
+                        // 计算页数
+                        var yeshu = Math.ceil(res.total / this.pagesize);
+                        $('.zongshu').text(yeshu);
+
+                        //设置临界值
+                        if (this.nowpage <= yeshu) {
+                            console.log(66666)
+                            $('.danqian').text(this.nowpage);
+                        }
+                    }
+
                 }
             })
         };
 
         //点击事件监听
-        AddGoods.prototype.listen = function () {
-            console.log(77777);
+        AddGoods.prototype.listen = function() {
+            // console.log(77777);
             // //存储this
             // let that = this;
             //获取删除按钮
@@ -229,12 +316,13 @@ require(['config'], function () {
                     console.log('bianji');
                     $('.container-fluid .row main').css('display', 'none');
                     $('.container-fluid .row .newGoods').css('display', 'block');
+
                     //执行修改函数
                     this.revamp();
                 }
             });
             //显示增加或修改商品模块
-            $('.nav-link').on('click', (e) => {
+            $('#xinzeng').on('click', (e) => {
                 $('.container-fluid .row main').css('display', 'none');
                 $('.container-fluid .row .newGoods').css('display', 'block');
                 // $('.container-fluid .row main').toggleClass('none');
@@ -248,15 +336,49 @@ require(['config'], function () {
                 $('.container-fluid .row .newGoods').css('display', 'none');
             });
 
+            //更改显示信息数量 5/10/20/30
+            $('#select').on('change', () => {
+                var val = $(':selected').val();
+                this.pagesize = val;
+                console.log(val)
+                this.getData();
+            });
+
+            //点击切换上下页
+            $('.pd-20').on('click', (e) => {
+                var tar = $(e.target).attr('class');
+                var arr = ['first', 'last', 'jump', 'prev', 'next'];
+                var num = arr.indexOf(tar);
+                if (num != -1) {
+                    this.goPage(tar);
+                }
+            });
+
+            //点击搜索
+            $('#search').on('click', () => {
+                this.search();
+            })
+
         }
 
         //修改信息
-        AddGoods.prototype.revamp = function () { }
+        AddGoods.prototype.revamp = function() {
+            // 先请求该项的详细项目，渲染到页面上，再改动
+            let currtr = $(this.target).closest('tr');
+            let currid = currtr.attr('data-guid'); //得到当前ID
+            console.log(currid);
+            this.goodsId = currid;
+            // 更改获取请求类型
+            this.singleName = true;
+            // 请求数据
+            this.getData()
+
+        }
 
         // 渲染数据方法
-        AddGoods.prototype.render = function () {
+        AddGoods.prototype.render = function() {
             var res = '';
-            var str = this.data.map((item, idx) => {
+            var str = this.data.data.map((item, idx) => {
                 return `
                 <tr class="text-c" data-guid="${item['goodsId']}">
                  <td><input name="" type="checkbox" value=""></td>
@@ -277,13 +399,40 @@ require(['config'], function () {
             $('tbody').html(str);
         };
 
+        //渲染修改页面的数据
+        AddGoods.prototype.render2 = function() {
+
+
+            console.log('woshi xiugai');
+            console.log(this.data)
+                //储存原先的图片路径
+            this.imgurl = this.data[0].imgurl;
+            console.log(this.imgurl);
+            //禁止修改ID
+            $('#goodsId').attr('disabled', 'disabled').val(this.data[0].goodsId); //id
+            $('#goodsName').val(this.data[0].goodsName); //名称
+            $('#goodsPrice').val(this.data[0].goodsPrice); //价格
+            $('#goodsMiao').val(this.data[0].goodsMiao); //描述
+            $('#goodsZhuang option:selected').val(this.data[0].goodsZhuang) //状态
+            $('#goodsLei option:selected').val(this.data[0].goodsLei); //类型
+            $('#goodsKu').val(this.data[0].goodsKu); //库存
+        }
+
         //搜索方法
-        AddGoods.prototype.search = function () {
+        AddGoods.prototype.search = function() {
+            console.log('sousuo');
+            this.mohu = true;
+            // 获取输入的值
+            this.val = $("#search_val").val();
+            if (this.val == "") {
+                return;
+            }
+            this.getData();
 
         };
 
         //单项删除方法
-        AddGoods.prototype.dele = function () {
+        AddGoods.prototype.dele = function() {
             console.log('我是单项删除');
             let currtr = $(this.target).closest('tr');
             let currid = currtr.attr('data-guid');
@@ -301,7 +450,8 @@ require(['config'], function () {
                     // 计算页数
                     var yeshu = Math.ceil(res.length / this.pagesize);
                     $('.zongshu').text(yeshu);
-                    //设置临界值
+                    console.log(yeshu)
+                        //设置临界值
                     if (this.nowpage <= yeshu) {
                         console.log(66666)
                         $('.danqian').text(this.nowpage);
@@ -311,16 +461,47 @@ require(['config'], function () {
         };
 
         // 批量删除方法
-        AddGoods.prototype.allDele = function () {
+        AddGoods.prototype.allDele = function() {
 
         };
 
         // 分页逻辑
-        AddGoods.prototype.goPage = function () {
-
+        AddGoods.prototype.goPage = function(type) {
+            let page = 1;
+            switch (type) {
+                case 'first':
+                    page = 1;
+                    break;
+                case 'last':
+                    page = Math.ceil(this.total / this.pagesize);
+                    break;
+                case 'jump':
+                    if ($('#jump').val() > Math.ceil(this.total / this.pagesize)) {
+                        break;
+                    };
+                    page = $('#jump').val()
+                    break;
+                case 'prev':
+                    if (this.nowpage == 1) {
+                        break;
+                    }
+                    page = this.nowpage - 1
+                        //边界判断
+                    break;
+                case 'next':
+                    if (this.nowpage == Math.ceil(this.total / this.pagesize)) {
+                        console.log(this.total)
+                        break;
+                    }
+                    page = this.nowpage + 1
+                    break;
+            }
+            this.nowpage = page;
+            console.log(this.nowpage)
+            this.getData();
         };
-        new AddGoods();
-        // new Goods();
+        // new AddGoods();
+
 
 
 

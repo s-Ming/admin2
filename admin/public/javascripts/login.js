@@ -45,9 +45,12 @@ require(['config'], function() {
             }
             //根据信息设置弹窗
         Login.prototype.tanchuang = function() {
-            if (this.data == "成功") {
+            if (this.data.status == "success") {
+
+                localStorage.setItem("token", this.data.token); //存存token
+
                 location = '../index.html?user=' + this.user;
-            } else if (this.data == '失败') {
+            } else {
                 alert('用户名或密码错误')
             }
         }
