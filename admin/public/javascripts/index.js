@@ -217,7 +217,7 @@ require(['config'], function() {
             // 执行提交的路径
             if (this.pictureCheck) {
                 // let insert = 'http://localhost:3000/index/insert';
-                let insert = = "http://47.93.0.253:3000/index/insert"
+                let insert = "http://47.93.0.253:3000/index/insert"
                     //提交
                 submit(insert);
 
