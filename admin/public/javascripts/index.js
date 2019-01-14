@@ -25,7 +25,9 @@ require(['config'], function() {
                             headers: {
                                 token: localStorage.getItem("token")
                             },
-                            url: "http://localhost:3000/users/autoLogin",
+                            // url: "http://localhost:3000/users/autoLogin",
+                            url: "http://47.93.0.253:3000",
+
                             success(data) {
                                 console.log(data)
                                 resolve(data)
@@ -61,7 +63,8 @@ require(['config'], function() {
 
             this.data; //储存请求的数据
 
-            this.rootpath = 'http://localhost:3000';
+            // this.rootpath = 'http://localhost:3000';
+            this.rootpath = "http://47.93.0.253:3000"
             this.pagesize = 5; //显示信息数量
             this.total = 0; //总页数
             this.nowpage = 1; //当前页码
@@ -92,7 +95,8 @@ require(['config'], function() {
         AddGoods.prototype.picture = function() {
             // console.log('上传图片');
             // console.log(this);
-            let rootPath = 'http://localhost:3000'
+            // let rootPath = 'http://localhost:3000'
+            let rootPath = "http://47.93.0.253:3000" //服务器
             let data = new FormData();
             let file = $('#goodsPicture')[0]['files'][0];
             console.log(file);
@@ -212,12 +216,14 @@ require(['config'], function() {
             };
             // 执行提交的路径
             if (this.pictureCheck) {
-                let insert = 'http://localhost:3000/index/insert';
-                //提交
+                // let insert = 'http://localhost:3000/index/insert';
+                let insert = = "http://47.93.0.253:3000/index/insert"
+                    //提交
                 submit(insert);
 
             } else if (this.singleName) { //（this.singleName）如果为修改可以不提交图片
-                let update = 'http://localhost:3000/index/update';
+                // let update = 'http://localhost:3000/index/update';
+                let update = "http://47.93.0.253:3000/index/update"
                 console.log('我是修改提交')
                 submit(update);
 

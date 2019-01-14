@@ -58,7 +58,7 @@ router.get('/findGoods', async(req, res, next) => {
         goodsId
     } : {}, page, pagesize)
 
-    if (data.data == 0) {
+    if (data.err == 0) {
         data.msg = '查询成功'
         res.send(data);
         return;
@@ -82,7 +82,7 @@ router.get('/findGoodsSing', async(req, res, next) => {
     }, page, pagesize);
     console.log("----------------------------------------------------------");
     console.log(data);
-    if (data.data == 0) {
+    if (data.err == 0) {
         data.msg = '查询成功'
         res.send(data);
         return;

@@ -11,24 +11,25 @@ require(['config'], function() {
 
         }
         Login.prototype.qianduanyanzheng = function() {
-            // console.log(7777);
-            //获取用户及密码信息，去除首尾空格
-            this.user = $('#inputEmail').val().trim();
-            this.pass = $('#inputPassword').val().trim();
-            //用户及密码不能为空
-            if (!this.user) {
-                $('.phone-p').text('用户名不能为空');
-                alert('用户名不能为空');
-                return false;
-            } else if (!this.pass) {
-                $('.password-p').text('密码不能为空');
-                alert('密码不能为空');
-                return false;
+                // console.log(7777);
+                //获取用户及密码信息，去除首尾空格
+                this.user = $('#inputEmail').val().trim();
+                this.pass = $('#inputPassword').val().trim();
+                //用户及密码不能为空
+                if (!this.user) {
+                    $('.phone-p').text('用户名不能为空');
+                    alert('用户名不能为空');
+                    return false;
+                } else if (!this.pass) {
+                    $('.password-p').text('密码不能为空');
+                    alert('密码不能为空');
+                    return false;
+                }
+                //执行服务器验证
+                // console.log(this)
+                this.getData();
             }
-            //执行服务器验证
-            // console.log(this)
-            this.getData();
-        }
+            //发送请求，验证信息
         Login.prototype.getData = function() {
                 console.log(this.user);
                 $.post('http://localhost:3000/users/login', {
@@ -47,7 +48,7 @@ require(['config'], function() {
         Login.prototype.tanchuang = function() {
             if (this.data.status == "success") {
 
-                localStorage.setItem("token", this.data.token); //存存token
+                localStorage.setItem("token", this.data.token); //储存token
 
                 location = '../index.html?user=' + this.user;
             } else {
