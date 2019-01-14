@@ -32,7 +32,8 @@ require(['config'], function() {
             //发送请求，验证信息
         Login.prototype.getData = function() {
                 console.log(this.user);
-                $.post('http://localhost:3000/users/login', {
+                // http://localhost:3000/users/login
+                $.post('http://47.93.0.253:3000/users/login', {
                     user: this.user,
                     password: this.pass
                 }, (data) => {

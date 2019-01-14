@@ -26,7 +26,7 @@ require(['config'], function() {
                                 token: localStorage.getItem("token")
                             },
                             // url: "http://localhost:3000/users/autoLogin",
-                            url: "http://47.93.0.253:3000",
+                            url: "http://47.93.0.253:3000/users/autoLogin",
 
                             success(data) {
                                 console.log(data)
@@ -64,7 +64,7 @@ require(['config'], function() {
             this.data; //储存请求的数据
 
             // this.rootpath = 'http://localhost:3000';
-            this.rootpath = "http://47.93.0.253:3000"
+            this.rootpath = "http://47.93.0.253:3000";
             this.pagesize = 5; //显示信息数量
             this.total = 0; //总页数
             this.nowpage = 1; //当前页码
@@ -96,7 +96,7 @@ require(['config'], function() {
             // console.log('上传图片');
             // console.log(this);
             // let rootPath = 'http://localhost:3000'
-            let rootPath = "http://47.93.0.253:3000" //服务器
+            let rootPath = "http://47.93.0.253:3000"; //服务器
             let data = new FormData();
             let file = $('#goodsPicture')[0]['files'][0];
             console.log(file);
