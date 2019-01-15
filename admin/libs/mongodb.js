@@ -3,7 +3,8 @@ const {
     ObjectId
 } = require('mongodb');
 // Connection URL
-const url = 'mongodb://47.93.0.253:27017';
+// const url = 'mongodb://47.93.0.253:27017';
+const url = 'mongodb://localhost:27017';
 // Database Name
 const dbName = 'admin2';
 // Use connect method to connect to the server
